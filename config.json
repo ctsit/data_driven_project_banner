@@ -22,6 +22,12 @@
             "name": "Custom SQL",
             "key": "custom_sql",
             "type": "text"
+        },
+        {
+            "name": "Invoice URL",
+            "key": "invoice_url",
+            "type": "text"
         }
+
     ]
 }

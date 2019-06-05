@@ -21,12 +21,15 @@ class ExternalModule extends AbstractExternalModule {
 
 
     function query() {
+        if (!$sql = $this->getSystemSetting('custom_sql')) {
         $sql = 'SELECT project_id, invoice_id,
   concat("https://redcap.ctsi.ufl.edu/invoices/invoice-", invoice_id, ".pdf") as invoice_url
         FROM ctsi_redcap.uf_annual_project_billing_invoices
                         where datediff(now(), invoice_created_date) > 340
                         and invoice_status = "sent";"';
-
+        } else {
+            // TODO: if ( $this->sanitizeUserSQL($sql) ) { ... } else { warn and revert to default SQL }
+        }
 
         // TODO
         // if (mysqli_query($sql)) { return true; }
@@ -37,7 +40,10 @@ class ExternalModule extends AbstractExternalModule {
     function bannerText() {
         $banner_text = "<h2>Banner header</h2> </br>";
 
-        $banner_text .= $this->getSystemSetting('banner_text');
+        if (!$admin_banner_txt = $this->getSystemSetting('banner_text') ) {
+            /* set some default */
+        }
+        $banner_text .= $admin_banner_txt;
 
         $banner_text .= "</br>Banner footer";
 
