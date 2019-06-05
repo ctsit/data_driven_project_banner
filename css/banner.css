@@ -1,0 +1,6 @@
+#project-banner {
+    --bg-color: #ffb099;
+    background-color: var(--bg-color);
+
+    border-style: solid;
+}

@@ -9,10 +9,11 @@ class ExternalModule extends AbstractExternalModule {
     function redcap_every_page_top($project_id) {
         // TODO: if ( url ~= */index.php* || url ~= */ProjectSetup/*)
         if ($this->query()) {
+            $this->includeCss('css/banner.css');
             echo '
         <script>
             $(document).ready(function() {
-                $("#sub-nav").after("<div>' . $this->bannerText() . '</div>");
+                $("#sub-nav").before("<div id=\"project-banner\">' . $this->bannerText() . '</div>");
             });
         </script>';
         }
@@ -41,6 +42,10 @@ class ExternalModule extends AbstractExternalModule {
         $banner_text .= "</br>Banner footer";
 
         return $banner_text;
+    }
+
+    protected function includeCss($path) {
+        echo '<link rel="stylesheet" href="' . $this->getUrl($path) . '">';
     }
 
 }
