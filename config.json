@@ -1,0 +1,27 @@
+{
+    "name": "Data Driven Project Banner",
+    "description": "Data driven project banner",
+    "namespace": "ProjectBanner\\ExternalModule",
+    "permissions": [
+        "redcap_every_page_top"
+    ],
+    "authors": [
+        {
+            "name": "Kyle Chesney",
+            "email": "kyle.chesney@ufl.edu",
+            "institution": "University of Florida - CTSI"
+        }
+    ],
+    "system-settings": [
+        {
+            "name": "Banner Text",
+            "key": "banner_text",
+            "type": "text"
+        },
+        {
+            "name": "Custom SQL",
+            "key": "custom_sql",
+            "type": "text"
+        }
+    ]
+}
