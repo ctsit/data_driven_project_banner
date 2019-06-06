@@ -36,7 +36,7 @@ class ExternalModule extends AbstractExternalModule {
         $project_id = PROJECT_ID;
 
         if (!$sql = $this->getSystemSetting('custom_sql')) {
-        $sql = 'SELECT $project_id, invoice_id,
+        $sql = 'SELECT project_id, invoice_id,
   concat("https://redcap.ctsi.ufl.edu/invoices/invoice-", invoice_id, ".pdf") as invoice_url
         FROM ctsi_redcap.uf_annual_project_billing_invoices
                         where datediff(now(), invoice_created_date) > 340
