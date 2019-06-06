@@ -7,28 +7,43 @@ use ExternalModules\AbstractExternalModule;
 class ExternalModule extends AbstractExternalModule {
 
     function redcap_every_page_top($project_id) {
-        // TODO: if ( url ~= */index.php* || url ~= */ProjectSetup/*)
-        if ($this->query()) {
-            $this->includeCss('css/banner.css');
-            echo '
-        <script>
-            $(document).ready(function() {
-                $("#sub-nav").before("<div id=\"project-banner\">' . $this->bannerText() . '</div>");
-            });
-        </script>';
+        $url = $_SERVER['REQUEST_URI'];
+        $is_on_project_home = preg_match("/^\/redcap\/redcap_v\d\.\d\.\d\/index\.php\?pid=\d+\z/", $url);
+        $is_on_project_setup = preg_match("/.*ProjectSetup.*/", $url);
+
+        if ( $is_on_project_home || $is_on_project_setup) {
+            if ( $this->queryInvoices() ) {
+                $this->displayBanner();
+            }
         }
     }
 
 
-    function query() {
+    function displayBanner() {
+        $this->includeCss('css/banner.css');
+        $this->includeJs('js/banner_inject.js');
+
+        if (!$banner_text = $this->getSystemSetting('banner_text') ) {
+            /* set some default */
+        }
+
+        $banner_text = json_encode($banner_text);
+        echo "<script type='text/javascript'>var banner_text = $banner_text;</script>";
+    }
+
+
+    function queryInvoices() {
+        $project_id = PROJECT_ID;
+
         if (!$sql = $this->getSystemSetting('custom_sql')) {
-        $sql = 'SELECT project_id, invoice_id,
+        $sql = 'SELECT $project_id, invoice_id,
   concat("https://redcap.ctsi.ufl.edu/invoices/invoice-", invoice_id, ".pdf") as invoice_url
         FROM ctsi_redcap.uf_annual_project_billing_invoices
                         where datediff(now(), invoice_created_date) > 340
                         and invoice_status = "sent";"';
         } else {
             // TODO: if ( $this->sanitizeUserSQL($sql) ) { ... } else { warn and revert to default SQL }
+            // Pass user sql as function arg and recurse if it fails
         }
 
         // TODO
@@ -37,21 +52,15 @@ class ExternalModule extends AbstractExternalModule {
         return true;
     }
 
-    function bannerText() {
-        $banner_text = "<h2>Banner header</h2> </br>";
-
-        if (!$admin_banner_txt = $this->getSystemSetting('banner_text') ) {
-            /* set some default */
-        }
-        $banner_text .= $admin_banner_txt;
-
-        $banner_text .= "</br>Banner footer";
-
-        return $banner_text;
-    }
 
     protected function includeCss($path) {
         echo '<link rel="stylesheet" href="' . $this->getUrl($path) . '">';
     }
+
+
+    protected function includeJs($path) {
+        echo '<script src="' . $this->getUrl($path) . '"></script>';
+    }
+
 
 }

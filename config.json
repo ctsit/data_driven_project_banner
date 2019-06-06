@@ -16,7 +16,7 @@
         {
             "name": "Banner Text",
             "key": "banner_text",
-            "type": "text"
+            "type": "rich-text"
         },
         {
             "name": "Custom SQL",
