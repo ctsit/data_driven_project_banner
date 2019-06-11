@@ -24,48 +24,54 @@ class ExternalModule extends AbstractExternalModule {
         $this->includeCss('css/banner.css');
         $this->includeJs('js/banner_inject.js');
 
-        if ( ( !$banner_text = $this->getSystemSetting('banner_text') ) && ( !$this->getSystemSetting('custom_sql') ) )  {
+        if ( !$banner_text = $this->getSystemSetting('banner_text')  )  {
             // Default banner text
             $banner_text = "Hello " . USERID . ",</br>You have project support fees due, see the link below:</br>";
 
             foreach( $sql_response as $row => $value) {
                 $banner_text .= "<a href=\"{$value['invoice_url']}\">Project {$value['project_id']}</a></br>";
             }
-        } else {
-            // "Data piping" recreation
-            $replace_with = [
-                '[project_id]' => $sql_response[0]['project_id'],
-                '[invoice_id]' => $sql_response[0]['invoice_id'],
-                '[invoice_url]' => $sql_response[0]['invoice_url'],
-                '[project_title]' => REDCap::getProjectTitle()
-            ];
-            $banner_text = str_replace(
-                array_keys($replace_with),
-                array_values($replace_with),
-                $banner_text
-            );
         }
+
+        $banner_text = $this->replaceSmartVariables($banner_text, $sql_response);
+
+        $redcap_project = db_query("SELECT * FROM redcap_projects WHERE project_id = " . PROJECT_ID);
+        $redcap_project = $redcap_project->fetch_all(MYSQLI_ASSOC);
+        $banner_text = $this->replaceSmartVariables($banner_text, $redcap_project);
 
         $banner_text = json_encode($banner_text);
         echo "<script type='text/javascript'>var banner_text = $banner_text;</script>";
     }
 
 
+    function replaceSmartVariables($input_text, $sql_response) {
+        // "Data piping" recreation
+        $smart_variables = (
+            array_map(
+                function($x) { return "[$x]"; },
+                array_keys($sql_response[0])
+            )
+        );
+
+        $smart_variables = array_combine($smart_variables, $sql_response[0]);
+        $smart_variables["[project_title]"] = REDCap::getProjectTitle();
+
+        return str_replace(
+            array_keys($smart_variables),
+            array_values($smart_variables),
+            $input_text
+        );
+    }
+
+
     function queryInvoices() {
         $project_id = PROJECT_ID;
 
-        if (!$sql = $this->getSystemSetting('custom_sql')) {
-            $sql = 'SELECT project_id, invoice_id,
-  concat("https://redcap.ctsi.ufl.edu/invoices/invoice-", invoice_id, ".pdf") as invoice_url
-FROM uf_annual_project_billing_invoices
-WHERE project_id = "' . $project_id . '"
-AND invoice_status= "sent"
-AND datediff(now(), invoice_created_date) > 340
-;';
-        } else {
-            // TODO: if ( $this->sanitizeUserSQL($sql) ) { ... } else { warn and revert to default SQL }
-            // Pass user sql as function arg and recurse if it fails
+        if (!$sql = $this->getSystemSetting('prebuilt_sql')) {
+            return;
         }
+
+        $sql = str_replace("[project_id]", PROJECT_ID, $sql);
 
         if ($response = db_query($sql)) {
             return ($response->fetch_all(MYSQLI_ASSOC));
