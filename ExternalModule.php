@@ -3,6 +3,7 @@
 namespace ProjectBanner\ExternalModule;
 
 use ExternalModules\AbstractExternalModule;
+use REDCap;
 
 class ExternalModule extends AbstractExternalModule {
 
@@ -12,19 +13,37 @@ class ExternalModule extends AbstractExternalModule {
         $is_on_project_setup = preg_match("/.*ProjectSetup.*/", $url);
 
         if ( $is_on_project_home || $is_on_project_setup) {
-            if ( $this->queryInvoices() ) {
-                $this->displayBanner();
+            if ($sql_response = $this->queryInvoices() ) {
+                $this->displayBanner($sql_response);
             }
         }
     }
 
 
-    function displayBanner() {
+    function displayBanner($sql_response) {
         $this->includeCss('css/banner.css');
         $this->includeJs('js/banner_inject.js');
 
-        if (!$banner_text = $this->getSystemSetting('banner_text') ) {
-            /* set some default */
+        if ( ( !$banner_text = $this->getSystemSetting('banner_text') ) && ( !$this->getSystemSetting('custom_sql') ) )  {
+            // Default banner text
+            $banner_text = "Hello " . USERID . ",</br>You have project support fees due, see the link below:</br>";
+
+            foreach( $sql_response as $row => $value) {
+                $banner_text .= "<a href=\"{$value['invoice_url']}\">Project {$value['project_id']}</a></br>";
+            }
+        } else {
+            // "Data piping" recreation
+            $replace_with = [
+                '[project_id]' => $sql_response[0]['project_id'],
+                '[invoice_id]' => $sql_response[0]['invoice_id'],
+                '[invoice_url]' => $sql_response[0]['invoice_url'],
+                '[project_title]' => REDCap::getProjectTitle()
+            ];
+            $banner_text = str_replace(
+                array_keys($replace_with),
+                array_values($replace_with),
+                $banner_text
+            );
         }
 
         $banner_text = json_encode($banner_text);
@@ -39,8 +58,9 @@ class ExternalModule extends AbstractExternalModule {
             $sql = 'SELECT project_id, invoice_id,
   concat("https://redcap.ctsi.ufl.edu/invoices/invoice-", invoice_id, ".pdf") as invoice_url
 FROM uf_annual_project_billing_invoices
-WHERE datediff(now(), invoice_created_date) > 340
+WHERE project_id = "' . $project_id . '"
 AND invoice_status= "sent"
+AND datediff(now(), invoice_created_date) > 340
 ;';
         } else {
             // TODO: if ( $this->sanitizeUserSQL($sql) ) { ... } else { warn and revert to default SQL }
@@ -48,7 +68,7 @@ AND invoice_status= "sent"
         }
 
         if ($response = db_query($sql)) {
-            return true;
+            return ($response->fetch_all(MYSQLI_ASSOC));
         }
 
         return false;

@@ -2,6 +2,7 @@
     "name": "Data Driven Project Banner",
     "description": "Data driven project banner",
     "namespace": "ProjectBanner\\ExternalModule",
+    "documentation": "README.md",
     "permissions": [
         "redcap_every_page_top"
     ],
@@ -22,12 +23,6 @@
             "name": "Custom SQL",
             "key": "custom_sql",
             "type": "text"
-        },
-        {
-            "name": "Invoice URL",
-            "key": "invoice_url",
-            "type": "text"
         }
-
     ]
 }
