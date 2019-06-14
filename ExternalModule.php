@@ -9,11 +9,14 @@ class ExternalModule extends AbstractExternalModule {
 
     function redcap_every_page_top($project_id) {
         $url = $_SERVER['REQUEST_URI'];
-        $is_on_project_home = preg_match("/^\/redcap\/redcap_v\d\.\d\.\d\/index\.php\?pid=\d+\z/", $url);
+        $is_on_project_home = preg_match("/\/redcap_v\d\.\d\.\d\/index\.php\?pid=\d+\z/", $url);
         $is_on_project_setup = preg_match("/.*ProjectSetup.*/", $url);
 
         if ( $is_on_project_home || $is_on_project_setup) {
             if ($sql_response = $this->queryInvoices() ) {
+                print_r("<pre>");
+                var_dump($sql_response);
+                print_r("</pre>");
                 $this->displayBanner($sql_response);
             }
         }
@@ -34,10 +37,6 @@ class ExternalModule extends AbstractExternalModule {
         }
 
         $banner_text = $this->replaceSmartVariables($banner_text, $sql_response);
-
-        $redcap_project = db_query("SELECT * FROM redcap_projects WHERE project_id = " . PROJECT_ID);
-        $redcap_project = $redcap_project->fetch_all(MYSQLI_ASSOC);
-        $banner_text = $this->replaceSmartVariables($banner_text, $redcap_project);
 
         $banner_text = json_encode($banner_text);
         echo "<script type='text/javascript'>var banner_text = $banner_text;</script>";

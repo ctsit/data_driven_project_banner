@@ -26,7 +26,7 @@
             "choices": [
                 {
                     "name": "UF: projects for which unpaid invoices were sent over 340 days ago",
-                    "value": "SELECT *, concat(\"https://redcap.ctsi.ufl.edu/invoices/invoice-\", invoice_id, \".pdf\") as invoice_url FROM uf_annual_project_billing_invoices WHERE project_id = [project_id] AND invoice_status = 'sent' AND datediff(now(), invoice_created_date) > 340;"
+                    "value": "SELECT *, concat(\"https://redcap.ctsi.ufl.edu/invoices/invoice-\", invoice_id, \".pdf\") as invoice_url FROM uf_annual_project_billing_invoices LEFT JOIN redcap_projects USING (project_id) WHERE project_id = [project_id] AND invoice_status = 'sent' AND datediff(now(), invoice_created_date) > 340;"
                 }
             ]
         }
