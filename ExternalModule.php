@@ -14,6 +14,9 @@ class ExternalModule extends AbstractExternalModule {
 
         if ( $is_on_project_home || $is_on_project_setup) {
             $sql_response = $this->queryInvoices();
+            if ( !$sql_response & $this->getSystemSetting('query_result_required') ) {
+                return false;
+            }
             $this->displayBanner($sql_response);
         }
     }
