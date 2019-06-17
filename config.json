@@ -1,6 +1,6 @@
 {
     "name": "Data Driven Project Banner",
-    "description": "Data driven project banner",
+    "description": "Display a banner at the top of select project pages. Supports data piping of query results into the banner text.",
     "namespace": "ProjectBanner\\ExternalModule",
     "documentation": "README.md",
     "permissions": [
@@ -10,6 +10,11 @@
         {
             "name": "Kyle Chesney",
             "email": "kyle.chesney@ufl.edu",
+            "institution": "University of Florida - CTSI"
+        },
+        {
+            "name": "Philip Chase",
+            "email": "pbc@ufl.edu",
             "institution": "University of Florida - CTSI"
         }
     ],
@@ -25,10 +30,17 @@
             "type": "dropdown",
             "choices": [
                 {
+                    "name": "REDCap projects table",
+                    "value": "SELECT * FROM redcap_projects WHERE project_id = [project_id]"
+                },
+                {
                     "name": "UF: projects for which unpaid invoices were sent over 340 days ago",
                     "value": "SELECT *, concat(\"https://redcap.ctsi.ufl.edu/invoices/invoice-\", invoice_id, \".pdf\") as invoice_url FROM uf_annual_project_billing_invoices LEFT JOIN redcap_projects USING (project_id) WHERE project_id = [project_id] AND invoice_status = 'sent' AND datediff(now(), invoice_created_date) > 340;"
                 }
             ]
         }
-    ]
+    ],
+    "compatibility": {
+        "redcap-version-min": "8.0.3"
+    }
 }
