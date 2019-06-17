@@ -13,12 +13,11 @@ class ExternalModule extends AbstractExternalModule {
         $is_on_project_setup = preg_match("/.*ProjectSetup.*/", $url);
 
         if ( $is_on_project_home || $is_on_project_setup) {
-            if ($sql_response = $this->queryInvoices() ) {
-                print_r("<pre>");
-                var_dump($sql_response);
-                print_r("</pre>");
-                $this->displayBanner($sql_response);
+            $sql_response = $this->queryInvoices();
+            if ( !$sql_response & $this->getSystemSetting('query_result_required') ) {
+                return false;
             }
+            $this->displayBanner($sql_response);
         }
     }
 
@@ -29,14 +28,12 @@ class ExternalModule extends AbstractExternalModule {
 
         if ( !$banner_text = $this->getSystemSetting('banner_text')  )  {
             // Default banner text
-            $banner_text = "Hello " . USERID . ",</br>You have project support fees due, see the link below:</br>";
-
-            foreach( $sql_response as $row => $value) {
-                $banner_text .= "<a href=\"{$value['invoice_url']}\">Project {$value['project_id']}</a></br>";
-            }
+            $banner_text = "This is the default project banner. Change this in the system level module configuration for the Data Driven Project Banner Module.</br>";
         }
 
-        $banner_text = $this->replaceSmartVariables($banner_text, $sql_response);
+        if ($sql_response) {
+            $banner_text = $this->replaceSmartVariables($banner_text, $sql_response);
+        }
 
         $banner_text = json_encode($banner_text);
         echo "<script type='text/javascript'>var banner_text = $banner_text;</script>";
