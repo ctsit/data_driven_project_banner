@@ -1,0 +1,12 @@
+#project-banner {
+    --bg-color: #ffb099;
+    background-color: var(--bg-color);
+
+    border-style: solid;
+    border-radius: 0.5em;
+
+    padding: 1%;
+    width: 75%;
+
+    opacity: 0.8;
+}
