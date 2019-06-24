@@ -9,7 +9,7 @@ class ExternalModule extends AbstractExternalModule {
 
     function redcap_every_page_top($project_id) {
         $url = $_SERVER['REQUEST_URI'];
-        $is_on_project_home = preg_match("/\/redcap_v\d\.\d\.\d\/index\.php\?pid=\d+\z/", $url);
+        $is_on_project_home = preg_match("/\/redcap_v\d+\.\d+\.\d+\/index\.php\?pid=\d+\z/", $url);
         $is_on_project_setup = preg_match("/.*ProjectSetup.*/", $url);
 
         if ( $is_on_project_home || $is_on_project_setup) {
