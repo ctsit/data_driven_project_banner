@@ -12,7 +12,7 @@ class ExternalModule extends AbstractExternalModule {
         $is_on_project_home = preg_match("/\/redcap_v\d+\.\d+\.\d+\/index\.php\?pid=\d+\z/", $url);
         $is_on_project_setup = preg_match("/.*ProjectSetup.*/", $url);
 
-        if ( $is_on_project_home || $is_on_project_setup) {
+        if ( ($is_on_project_home || $is_on_project_setup) || $this->getSystemSetting('display_everywhere')) {
             $sql_response = $this->queryInvoices();
             if ( !$sql_response & $this->getSystemSetting('query_result_required') ) {
                 return false;

@@ -48,6 +48,11 @@
             "name": "Require a non-empty query result",
             "key": "query_result_required",
             "type": "checkbox"
+        },
+        {
+            "name": "Display on all pages",
+            "key": "display_everywhere",
+            "type": "checkbox"
         }
     ],
     "compatibility": {
