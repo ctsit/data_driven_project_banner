@@ -30,6 +30,16 @@
             "type": "rich-text"
         },
         {
+            "name": "Banner Background Color",
+            "key": "bg_color",
+            "type": "color-picker"
+        },
+        {
+            "name": "Banner Border Color",
+            "key": "border_color",
+            "type": "color-picker"
+        },
+        {
             "name": "Prebuilt SQL",
             "key": "prebuilt_sql",
             "type": "dropdown",

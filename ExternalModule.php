@@ -23,6 +23,13 @@ class ExternalModule extends AbstractExternalModule {
 
 
     function displayBanner($sql_response) {
+        echo "<style>
+        #project-banner {" .
+            "--bg-color: " . $this->getSystemSetting('bg_color') . ";" .
+            "--border-color: " . $this->getSystemSetting('border_color') . ";" .
+        "}
+        </style>";
+
         $this->includeCss('css/banner.css');
         $this->includeJs('js/banner_inject.js');
 
