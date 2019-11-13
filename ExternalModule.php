@@ -43,7 +43,7 @@ class ExternalModule extends AbstractExternalModule {
         }
 
         $banner_text = json_encode($banner_text);
-        echo "<script type='text/javascript'>var banner_text = $banner_text;</script>";
+        echo "<script type='text/javascript'>var data_driven_project_banner_text = $banner_text;</script>";
     }
 
 
