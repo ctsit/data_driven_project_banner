@@ -23,6 +23,13 @@ class ExternalModule extends AbstractExternalModule {
 
 
     function displayBanner($sql_response) {
+        echo "<style>
+        #project-banner {" .
+            "--bg-color: " . $this->getSystemSetting('bg_color') . ";" .
+            "--border-color: " . $this->getSystemSetting('border_color') . ";" .
+        "}
+        </style>";
+
         $this->includeCss('css/banner.css');
         $this->includeJs('js/banner_inject.js');
 
@@ -36,7 +43,7 @@ class ExternalModule extends AbstractExternalModule {
         }
 
         $banner_text = json_encode($banner_text);
-        echo "<script type='text/javascript'>var banner_text = $banner_text;</script>";
+        echo "<script type='text/javascript'>var data_driven_project_banner_text = $banner_text;</script>";
     }
 
 

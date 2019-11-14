@@ -21,6 +21,11 @@
             "name": "Philip Chase",
             "email": "pbc@ufl.edu",
             "institution": "University of Florida - CTSI"
+        },
+        {
+            "name": "Marly Gotti",
+            "email": "marlycormar@ufl.edu",
+            "institution": "University of Florida - CTSI"
         }
     ],
     "system-settings": [
@@ -28,6 +33,16 @@
             "name": "Banner Text",
             "key": "banner_text",
             "type": "rich-text"
+        },
+        {
+            "name": "Banner Background Color",
+            "key": "bg_color",
+            "type": "color-picker"
+        },
+        {
+            "name": "Banner Border Color",
+            "key": "border_color",
+            "type": "color-picker"
         },
         {
             "name": "Prebuilt SQL",
