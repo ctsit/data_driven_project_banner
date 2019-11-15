@@ -37,12 +37,14 @@
         {
             "name": "Banner Background Color",
             "key": "bg_color",
-            "type": "color-picker"
+            "type": "color-picker",
+            "default": "red"
         },
         {
             "name": "Banner Border Color",
             "key": "border_color",
-            "type": "color-picker"
+            "type": "color-picker",
+            "default": "black"
         },
         {
             "name": "Prebuilt SQL",
