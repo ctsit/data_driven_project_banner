@@ -1,3 +1,3 @@
 $(document).ready(function() {
-    $("#subheader").after(`<div id='project-banner'> ${banner_text}</div>`);
+    $("#sub-nav").before(`<div id='project-banner'> ${data_driven_project_banner_text}</div>`);
 });
