@@ -2,6 +2,14 @@
 All notable changes to the REDCap Data Driven Project Banner will be documented in this file.
 
 
+## [1.1.0] - 2019-11-18
+### Added
+- Add option to display banner on all pages of a project (Kyle Chesney)
+
+### Changed
+- Place banner at the top of the page to avoid obfuscating other text (Kyle Chesney)
+
+
 ## [1.0.1] - 2019-11-14
 ### Added
 - Include option to select color/border of banner. (Kyle Chesney)
