@@ -1,4 +1,7 @@
 # Data Driven Project Banner
+
+[![DOI](https://zenodo.org/badge/190222172.svg)](https://zenodo.org/badge/latestdoi/190222172)
+
 A REDCap Module designed to display a banner at the top of select project pages. Supports the data piping of query results into the banner text.
 
 ## Prerequisites
