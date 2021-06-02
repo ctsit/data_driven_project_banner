@@ -29,11 +29,20 @@ module configuration for the Data Driven Project Banner module.
 
 The banner text field also supports data piping akin to REDCap Smart Variables, (i.e. `[project_id]` will return the value stored for project id). That said, this module uses its _own_ set of replacement fields. The variables available for replacement are the column names in the response to the SQL query specified in the _Prebuilt SQL_ configuration option. No other values are available to be piped.
 
-### Prebuilt SQL
+### Criteria for display
 
-Select an optional SQL query from the list provided. The recommended query is _REDCap projects table_ which runs the query `SELECT * FROM redcap_projects WHERE project_id = [project_id]` where [project_id] is the Project ID for the current project. Note that if the SQL query fails, the banner will still be displayed, but without the intended data piping. If a query result is _required_ to display the banner, select _Require a non-empty query result_.
 
-Advanced users may edit the `config.json` file to add their own SQL queries. These queries should be project-centric and return only one row. Any reference to [project_id] in these queries will be replaced with the current Project ID.  That is the only substition made to the query string.
+- **Always display**: Always display the banner. Note that if the SQL query in [**Data to display**](#Data-to-display) fails, the banner may still be displayed, but without the intended data piping. If a query result is _required_ to display the banner, select _Require a non-empty query result_.
+- **Require a non-empty query result**: Display the banner _only_ if the query from [**Data to display**](#Data-to-display) returns results. Useful for banners utilizing data piping fields.
+- **Custom query**: This advanced option allows you to create your own query in a new field titled **Custom SQL for criteria**; the banner will only be displayed if the result of your query is not empty.
+  - **Custom SQL for criteria**: This text field spawns when **Custom query** is selected, use this field to create your SQL statement. A simple example may be `SELECT * FROM redcap_data WHERE project_id = [project_id]`, which will cause the banner to only appear on projects which have data.
+    - Any reference to [project_id] in these queries will be replaced with the current Project ID. That is the only substitution made to the query string.
+
+### Data to display
+
+Select an optional SQL query from the list provided. The recommended query is _REDCap projects table_ which runs the query `SELECT * FROM redcap_projects WHERE project_id = [project_id]` where [project_id] is the Project ID for the current project.
+
+Advanced users may edit the `config.json` file to add their own SQL queries. These queries should be project-centric and return only one row. Any reference to [project_id] in these queries will be replaced with the current Project ID. That is the only substitution made to the query string.
 
 ### Data piping fields
 

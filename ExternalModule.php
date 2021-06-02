@@ -11,13 +11,25 @@ class ExternalModule extends AbstractExternalModule {
         $url = $_SERVER['REQUEST_URI'];
         $is_on_project_home = preg_match("/\/redcap_v\d+\.\d+\.\d+\/index\.php\?pid=\d+\z/", $url);
         $is_on_project_setup = preg_match("/.*ProjectSetup.*/", $url);
+        $criteria = $this->getSystemSetting('criteria');
 
-        if ( ($is_on_project_home || $is_on_project_setup) || $this->getSystemSetting('display_everywhere')) {
-            $sql_response = $this->queryInvoices();
-            if ( !$sql_response & $this->getSystemSetting('query_result_required') ) {
-                return false;
+        if ($this->getSystemSetting('display_everywhere') || ($is_on_project_home || $is_on_project_setup)) {
+            $sql_response = $this->queryData();
+            switch ($criteria) {
+                case "custom":
+                    if (!$this->queryCriteria()) return;
+                    $this->displayBanner($sql_response);
+                    break;
+                case "require_result":
+                    // check if the criteria returns anything
+                    if (!$sql_response) return;
+                case "always":
+                    $this->displayBanner($sql_response);
+                    break;
+                default:
+                    $this->displayBanner($sql_response);
+                    break;
             }
-            $this->displayBanner($sql_response);
         }
     }
 
@@ -74,6 +86,7 @@ class ExternalModule extends AbstractExternalModule {
 
         $sql = str_replace("[project_id]", PROJECT_ID, $prebuilt_sql);
 
+        // TODO: migrate to framework v4's query in major version change
         if ($response = db_query($sql)) {
             return ($response->fetch_all(MYSQLI_ASSOC));
         }
@@ -82,12 +95,12 @@ class ExternalModule extends AbstractExternalModule {
     }
 
     function queryCriteria() {
-        return $this->performPrebuiltQuery($this->getSystemSetting('criteria_sql'));
+        return $this->performPrebuiltQuery($this->getSystemSetting('custom_criteria_sql'));
     }
 
 
-    function queryInvoices() {
-        return $this->performPrebuiltQuery($this->getSystemSetting('prebuilt_sql'));
+    function queryData() {
+        return $this->performPrebuiltQuery($this->getSystemSetting('data_sql'));
     }
 
 

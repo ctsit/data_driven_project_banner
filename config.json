@@ -41,7 +41,7 @@
         },
         {
             "name": "Criteria for display",
-            "key": "criteria_sql",
+            "key": "criteria",
             "type": "dropdown",
             "choices": [
                 {
@@ -54,13 +54,27 @@
                 },
                 {
                     "name": "Custom query",
-                    "value": "SELECT * FROM redcap_projects WHERE project_id = [project_id]"
+                    "value": "custom"
                 }
             ]
         },
         {
+            "name": "Custom SQL for criteria",
+            "key": "custom_criteria_sql",
+            "type": "text",
+            "branchingLogic": {
+                "conditions":
+                [
+                    {
+                        "field": "criteria",
+                        "value": "custom"
+                    }
+                ]
+            }
+        },
+        {
             "name": "Data to display",
-            "key": "prebuilt_sql",
+            "key": "data_sql",
             "type": "dropdown",
             "choices": [
                 {
@@ -72,11 +86,6 @@
                     "value": "SELECT *, concat(\"https://redcap.ctsi.ufl.edu/invoices/invoice-\", invoice_id, \".pdf\") as invoice_url FROM uf_annual_project_billing_invoices LEFT JOIN redcap_projects USING (project_id) WHERE project_id = [project_id] AND invoice_status = 'sent' AND datediff(now(), invoice_created_date) > 340;"
                 }
             ]
-        },
-        {
-            "name": "Require a non-empty query result",
-            "key": "query_result_required",
-            "type": "checkbox"
         },
         {
             "name": "Display on all pages",
