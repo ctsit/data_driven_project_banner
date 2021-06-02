@@ -67,20 +67,27 @@ class ExternalModule extends AbstractExternalModule {
     }
 
 
-    function queryInvoices() {
-        $project_id = PROJECT_ID;
-
-        if (!$sql = $this->getSystemSetting('prebuilt_sql')) {
+    private function performPrebuiltQuery($prebuilt_sql) {
+        if (!$prebuilt_sql) {
             return;
         }
 
-        $sql = str_replace("[project_id]", PROJECT_ID, $sql);
+        $sql = str_replace("[project_id]", PROJECT_ID, $prebuilt_sql);
 
         if ($response = db_query($sql)) {
             return ($response->fetch_all(MYSQLI_ASSOC));
         }
 
         return false;
+    }
+
+    function queryCriteria() {
+        return $this->performPrebuiltQuery($this->getSystemSetting('criteria_sql'));
+    }
+
+
+    function queryInvoices() {
+        return $this->performPrebuiltQuery($this->getSystemSetting('prebuilt_sql'));
     }
 
 

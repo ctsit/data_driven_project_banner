@@ -40,7 +40,26 @@
             "type": "color-picker"
         },
         {
-            "name": "Prebuilt SQL",
+            "name": "Criteria for display",
+            "key": "criteria_sql",
+            "type": "dropdown",
+            "choices": [
+                {
+                    "name": "Always display",
+                    "value": "always"
+                },
+                {
+                    "name": "Require a non-empty query result",
+                    "value": "require_result"
+                },
+                {
+                    "name": "Custom query",
+                    "value": "SELECT * FROM redcap_projects WHERE project_id = [project_id]"
+                }
+            ]
+        },
+        {
+            "name": "Data to display",
             "key": "prebuilt_sql",
             "type": "dropdown",
             "choices": [
