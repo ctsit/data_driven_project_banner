@@ -25,9 +25,42 @@
     ],
     "system-settings": [
         {
+            "name": "Multi Row Response",
+            "key": "multi_row_response",
+            "type": "checkbox"
+        },
+        {
+            "name": "Banner Top Text",
+            "key": "banner_text_top",
+            "type": "rich-text",
+            "branchingLogic": {
+                "conditions":
+                [
+                    {
+                        "field": "multi_row_response",
+                        "value": true
+                    }
+                ]
+            }
+        },
+        {
             "name": "Banner Text",
             "key": "banner_text",
             "type": "rich-text"
+        },
+        {
+            "name": "Banner Bottom Text",
+            "key": "banner_text_bottom",
+            "type": "rich-text",
+            "branchingLogic": {
+                "conditions":
+                [
+                    {
+                        "field": "multi_row_response",
+                        "value": true
+                    }
+                ]
+            }
         },
         {
             "name": "Banner Background Color",
@@ -84,8 +117,26 @@
                 {
                     "name": "UF: projects for which unpaid invoices were sent over 340 days ago",
                     "value": "SELECT *, concat(\"https://redcap.ctsi.ufl.edu/invoices/invoice-\", invoice_id, \".pdf\") as invoice_url FROM uf_annual_project_billing_invoices LEFT JOIN redcap_projects USING (project_id) WHERE project_id = [project_id] AND invoice_status = 'sent' AND datediff(now(), invoice_created_date) > 340;"
+                },
+                {
+                    "name": "Custom",
+                    "value": "custom"
                 }
             ]
+        },
+        {
+            "name": "Custom SQL for data",
+            "key": "custom_data_sql",
+            "type": "text",
+            "branchingLogic": {
+                "conditions":
+                [
+                    {
+                        "field": "data_sql",
+                        "value": "custom"
+                    }
+                ]
+            }
         },
         {
             "name": "Display on all pages",
