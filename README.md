@@ -9,7 +9,7 @@ A REDCap Module designed to display a banner at the top of select project pages.
 - REDCap >= 8.0.3
 
 ## Easy Installation
-- Obtain this module from the Consortium [REDCap Repo] (https://redcap.vanderbilt.edu/consortium/modules/index.php) from the REDCap Control Center.
+- Obtain this module from the Consortium [REDCap Repo](https://redcap.vanderbilt.edu/consortium/modules/index.php) from the REDCap Control Center.
 
 ## Manual Installation
 - Clone this repo into `<redcap-root>/modules/data_driven_project_banner_v0.0.0`.
@@ -17,6 +17,10 @@ A REDCap Module designed to display a banner at the top of select project pages.
 ## Global Configuration
 
 Typically, this module should be enabled on all projects after it has been configured.  All configuration options are at the system-level.
+
+### Multi Row Response
+
+Check this option if you expect your query will return multiple rows, doing so will reveal 2 additional fields: **Banner Top Text** and **Banner Bottom Text**. These fields will appear before and after the **Banner Text**, respectively. These fields do _not_ support data piping.
 
 ### Banner Text
 
@@ -27,7 +31,9 @@ This is the default project banner. Change this in the system level
 module configuration for the Data Driven Project Banner module.
 ```
 
-The banner text field also supports data piping akin to REDCap Smart Variables, (i.e. `[project_id]` will return the value stored for project id). That said, this module uses its _own_ set of replacement fields. The variables available for replacement are the column names in the response to the SQL query specified in the _Prebuilt SQL_ configuration option. No other values are available to be piped.
+The banner text field also supports data piping akin to REDCap Smart Variables, (i.e. `[project_id]` will return the value stored for project id). That said, this module uses its _own_ set of replacement fields. The variables available for replacement are the column names in the response to the SQL query specified in the [**Data to display**](#Data-to-display) configuration option. No other values are available to be piped.
+
+**Note:** This block will be repeated for _every row returned by the query_. If your **Data to display** query is expected to return multiple rows, use the fields provided by **Multi Row Response**
 
 ### Criteria for display
 
