@@ -48,7 +48,7 @@ The banner text field also supports data piping akin to REDCap Smart Variables, 
 
 Select an optional SQL query from the list provided. The recommended query is _REDCap projects table_ which runs the query `SELECT * FROM redcap_projects WHERE project_id = [project_id]` where [project_id] is the Project ID for the current project.
 
-Advanced users may edit the `config.json` file to add their own SQL queries. These queries should be project-centric and return only one row. Any reference to [project_id] in these queries will be replaced with the current Project ID. That is the only substitution made to the query string.
+Much like Criteria for display, advanced users may add their own SQL queries by selecting the "custom query option". These queries should be project-centric. Any reference to [project_id] in these queries will be replaced with the current Project ID.
 
 ### Data piping fields
 
