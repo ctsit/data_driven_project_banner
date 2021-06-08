@@ -113,10 +113,7 @@ class ExternalModule extends AbstractExternalModule {
 
 
     function queryData() {
-        $data_sql = $this->getSystemSetting('data_sql');
-        if ($data_sql == "custom") {
-            $data_sql = "SELECT " . $this->getSystemSetting('custom_data_sql');
-        }
+        $data_sql = "SELECT " . $this->getSystemSetting('custom_data_sql');
         return $this->performPrebuiltQuery($data_sql);
     }
 
