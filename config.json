@@ -4,22 +4,13 @@
     "namespace": "ProjectBanner\\ExternalModule",
     "documentation": "README.md",
     "permissions": [
-        "redcap_every_page_top"
+        "redcap_every_page_top",
+        "redcap_module_configure_button_display"
     ],
     "authors": [
         {
-            "name": "Kyle Chesney",
-            "email": "kyle.chesney@ufl.edu",
-            "institution": "University of Florida - CTSI"
-        },
-        {
-            "name": "Taryn Stoffs",
-            "email": "tls@ufl.edu",
-            "institution": "University of Florida - CTSI"
-        },
-        {
-            "name": "Philip Chase",
-            "email": "pbc@ufl.edu",
+            "name": "University of Florida CTS-IT",
+            "email": "CTSIT-REDCAP-MODULE-SUPPO@LISTS.UFL.EDU",
             "institution": "University of Florida - CTSI"
         }
     ],
@@ -94,7 +85,7 @@
         {
             "name": "Custom SQL for criteria",
             "key": "custom_criteria_sql",
-            "type": "text",
+            "type": "textarea",
             "branchingLogic": {
                 "conditions":
                 [
@@ -115,10 +106,6 @@
                     "value": "SELECT * FROM redcap_projects WHERE project_id = [project_id]"
                 },
                 {
-                    "name": "UF: projects for which unpaid invoices were sent over 340 days ago",
-                    "value": "SELECT *, concat(\"https://redcap.ctsi.ufl.edu/invoices/invoice-\", invoice_id, \".pdf\") as invoice_url FROM uf_annual_project_billing_invoices LEFT JOIN redcap_projects USING (project_id) WHERE project_id = [project_id] AND invoice_status = 'sent' AND datediff(now(), invoice_created_date) > 340;"
-                },
-                {
                     "name": "Custom",
                     "value": "custom"
                 }
@@ -127,7 +114,7 @@
         {
             "name": "Custom SQL for data",
             "key": "custom_data_sql",
-            "type": "text",
+            "type": "textarea",
             "branchingLogic": {
                 "conditions":
                 [

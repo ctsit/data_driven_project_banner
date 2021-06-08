@@ -5,6 +5,8 @@
 
 A REDCap Module designed to display a banner at the top of select project pages. Supports the data piping of query results into the banner text.
 
+Please see the [CHANGELOG](CHANGELOG.md) to learn about changes and bugfixes. Version 2.0.0 introduces **breaking** changes.
+
 ## Prerequisites
 - REDCap >= 8.0.3
 
@@ -41,18 +43,18 @@ The banner text field also supports data piping akin to REDCap Smart Variables, 
 - **Always display**: Always display the banner. Note that if the SQL query in [**Data to display**](#Data-to-display) fails, the banner may still be displayed, but without the intended data piping. If a query result is _required_ to display the banner, select _Require a non-empty query result_.
 - **Require a non-empty query result**: Display the banner _only_ if the query from [**Data to display**](#Data-to-display) returns results. Useful for banners utilizing data piping fields.
 - **Custom query**: This advanced option allows you to create your own query in a new field titled **Custom SQL for criteria**; the banner will only be displayed if the result of your query is not empty.
-  - **Custom SQL for criteria**: This text field spawns when **Custom query** is selected, use this field to create your SQL statement. A simple example may be `SELECT * FROM redcap_data WHERE project_id = [project_id]`, which will cause the banner to only appear on projects which have data.
+  - **Custom SQL for criteria**: This text field spawns when **Custom query** is selected, use this field to create your SQL statement. The `SELECT` keyword is automatically prepended to queries for you as your queries should all be `SELECT` statements. A simple example may be `* FROM redcap_data WHERE project_id = [project_id]`, which will cause the banner to only appear on projects which have data.
     - Any reference to [project_id] in these queries will be replaced with the current Project ID. That is the only substitution made to the query string.
 
 ### Data to display
 
 Select an optional SQL query from the list provided. The recommended query is _REDCap projects table_ which runs the query `SELECT * FROM redcap_projects WHERE project_id = [project_id]` where [project_id] is the Project ID for the current project.
 
-Much like Criteria for display, advanced users may add their own SQL queries by selecting the "custom query option". These queries should be project-centric. Any reference to [project_id] in these queries will be replaced with the current Project ID.
+Much like **Criteria for display**, advanced users may add their own SQL queries by selecting the "custom query option". These queries should be project-centric. Any reference to [project_id] in these queries will be replaced with the current Project ID.
 
 ### Data piping fields
 
-If you use the _REDCap projects table_ query, there are over 110 possible column names to choose from when data piping. These columns are probably the most interesting for data piping:
+If you use the _REDCap projects table_ query in *Data to display*, there are over 110 possible column names to choose from when data piping. These columns are probably the most interesting for data piping:
 
 ```
 project_id
@@ -69,25 +71,4 @@ project_pi_pub_exclude
 project_pub_matching_institution
 project_irb_number
 project_grant_number
-```
-
-### Site-specific queries
-
-If you are using the query _UF: projects for which unpaid invoices were sent over 340 days ago_, it adds these fields to those listed above, but this query is dependent on tables available in the UF CTSI REDCap instance.
-
-```
-invoice_url
-invoice_id
-invoice_status
-invoice_created_date
-creation_time
-saved_attribute_count
-record_count
-uploaded_file_count
-total_file_storage_in_mb
-owner_username
-owner_firstname
-owner_lastname
-owner_email
-project_user_email_addresses
 ```
