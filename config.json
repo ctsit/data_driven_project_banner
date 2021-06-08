@@ -97,33 +97,9 @@
             }
         },
         {
-            "name": "Data to display",
-            "key": "data_sql",
-            "type": "dropdown",
-            "choices": [
-                {
-                    "name": "REDCap projects table",
-                    "value": "SELECT * FROM redcap_projects WHERE project_id = [project_id]"
-                },
-                {
-                    "name": "Custom",
-                    "value": "custom"
-                }
-            ]
-        },
-        {
             "name": "Custom SQL for data",
             "key": "custom_data_sql",
-            "type": "textarea",
-            "branchingLogic": {
-                "conditions":
-                [
-                    {
-                        "field": "data_sql",
-                        "value": "custom"
-                    }
-                ]
-            }
+            "type": "textarea"
         },
         {
             "name": "Display on all pages",

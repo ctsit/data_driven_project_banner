@@ -35,7 +35,7 @@ module configuration for the Data Driven Project Banner module.
 
 The banner text field also supports data piping akin to REDCap Smart Variables, (i.e. `[project_id]` will return the value stored for project id). That said, this module uses its _own_ set of replacement fields. The variables available for replacement are the column names in the response to the SQL query specified in the [**Data to display**](#Data-to-display) configuration option. No other values are available to be piped.
 
-**Note:** This block will be repeated for _every row returned by the query_. If your **Data to display** query is expected to return multiple rows, use the fields provided by **Multi Row Response**
+**Note:** This block will be repeated for _every row returned by the query_. If your [**Data to display**](#Data-to-display) query is expected to return multiple rows, use the fields provided by **Multi Row Response**
 
 ### Criteria for display
 
@@ -48,13 +48,12 @@ The banner text field also supports data piping akin to REDCap Smart Variables, 
 
 ### Data to display
 
-Select an optional SQL query from the list provided. The recommended query is _REDCap projects table_ which runs the query `SELECT * FROM redcap_projects WHERE project_id = [project_id]` where [project_id] is the Project ID for the current project.
-
-Much like **Criteria for display**, advanced users may add their own SQL queries by selecting the "custom query option". These queries should be project-centric. Any reference to [project_id] in these queries will be replaced with the current Project ID.
+Create your own SQL query to provide data. This field behaves similarly to the **Custom SQL for criteria** option for **Criteria for display** - it supports data piping of all columns it returns and prepends `SELECT` to your queries.  
+A basic example you may find useful is `* FROM redcap_projects WHERE project_id = [project_id]` which returns the information for the project in which the banner is displayed.
 
 ### Data piping fields
 
-If you use the _REDCap projects table_ query in *Data to display*, there are over 110 possible column names to choose from when data piping. These columns are probably the most interesting for data piping:
+If you use the suggested query in **Data to display**, there are over 110 possible column names to choose from when data piping. These columns are probably the most interesting for data piping:
 
 ```
 project_id

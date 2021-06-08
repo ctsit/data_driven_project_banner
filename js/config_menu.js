@@ -12,7 +12,6 @@ $(document).ready(function() {
 
         // Add "SELECT" prefix to custom SQL query fields
         $('[name^="custom_"][name$="_sql"]').each(function() {
-            console.log(this);
             if ($(this).hasClass('select-prefix-set')) {
                 return;
             }
