@@ -54,7 +54,7 @@ Much like **Criteria for display**, advanced users may add their own SQL queries
 
 ### Data piping fields
 
-If you use the _REDCap projects table_ query, there are over 110 possible column names to choose from when data piping. These columns are probably the most interesting for data piping:
+If you use the _REDCap projects table_ query in *Data to display*, there are over 110 possible column names to choose from when data piping. These columns are probably the most interesting for data piping:
 
 ```
 project_id
@@ -71,25 +71,4 @@ project_pi_pub_exclude
 project_pub_matching_institution
 project_irb_number
 project_grant_number
-```
-
-### Site-specific queries
-
-If you are using the query _UF: projects for which unpaid invoices were sent over 340 days ago_, it adds these fields to those listed above, but this query is dependent on tables available in the UF CTSI REDCap instance.
-
-```
-invoice_url
-invoice_id
-invoice_status
-invoice_created_date
-creation_time
-saved_attribute_count
-record_count
-uploaded_file_count
-total_file_storage_in_mb
-owner_username
-owner_firstname
-owner_lastname
-owner_email
-project_user_email_addresses
 ```
