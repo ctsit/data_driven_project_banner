@@ -1,6 +1,15 @@
 # Change Log
 All notable changes to the REDCap Data Driven Project Banner will be documented in this file.
 
+## [2.0.0] - 2021-06-08
+### Added
+- Add support for custom SQL queries for data (Kyle Chesney)
+- Add support for multi row data responses, surrounding rich text fields (Kyle Chesney)
+- Add display criteria with custom SQL support (Kyle Chesney)
+
+### Changed
+- Remove prebuilt sql dropdown entirely, breaking this functionality (Kyle Chesney)
+
 
 ## [1.1.0] - 2019-11-18
 ### Added
