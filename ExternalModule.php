@@ -23,14 +23,19 @@ class ExternalModule extends AbstractExternalModule {
                 case "require_result":
                     // check if the criteria returns anything
                     if (!$sql_response) return;
-                case "always":
-                    $this->displayBanner($sql_response);
-                    break;
                 default:
+                    // always display
                     $this->displayBanner($sql_response);
                     break;
             }
         }
+    }
+
+
+    function redcap_module_configure_button_display($project_id) {
+        $this->setJsSettings(array('modulePrefix' => $this->PREFIX));
+        $this->includeJs('js/config_menu.js');
+        return true;
     }
 
 
@@ -89,6 +94,7 @@ class ExternalModule extends AbstractExternalModule {
         if (!$prebuilt_sql) {
             return;
         }
+        $prebuilt_sql = htmlspecialchars_decode($prebuilt_sql);
 
         $sql = str_replace("[project_id]", PROJECT_ID, $prebuilt_sql);
 
@@ -101,14 +107,15 @@ class ExternalModule extends AbstractExternalModule {
     }
 
     function queryCriteria() {
-        return $this->performPrebuiltQuery($this->getSystemSetting('custom_criteria_sql'));
+        $sql = "SELECT " . $this->getSystemSetting('custom_criteria_sql');
+        return $this->performPrebuiltQuery($sql);
     }
 
 
     function queryData() {
         $data_sql = $this->getSystemSetting('data_sql');
         if ($data_sql == "custom") {
-            $data_sql = $this->getSystemSetting('custom_data_sql');
+            $data_sql = "SELECT " . $this->getSystemSetting('custom_data_sql');
         }
         return $this->performPrebuiltQuery($data_sql);
     }
@@ -124,4 +131,7 @@ class ExternalModule extends AbstractExternalModule {
     }
 
 
+    protected function setJsSettings($settings) {
+        echo '<script>DDPB = ' . json_encode($settings) . ';</script>';
+    }
 }

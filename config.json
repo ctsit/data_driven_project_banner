@@ -4,7 +4,8 @@
     "namespace": "ProjectBanner\\ExternalModule",
     "documentation": "README.md",
     "permissions": [
-        "redcap_every_page_top"
+        "redcap_every_page_top",
+        "redcap_module_configure_button_display"
     ],
     "authors": [
         {
@@ -94,7 +95,7 @@
         {
             "name": "Custom SQL for criteria",
             "key": "custom_criteria_sql",
-            "type": "text",
+            "type": "textarea",
             "branchingLogic": {
                 "conditions":
                 [
@@ -127,7 +128,7 @@
         {
             "name": "Custom SQL for data",
             "key": "custom_data_sql",
-            "type": "text",
+            "type": "textarea",
             "branchingLogic": {
                 "conditions":
                 [
