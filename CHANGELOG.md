@@ -1,6 +1,11 @@
 # Change Log
 All notable changes to the REDCap Data Driven Project Banner will be documented in this file.
 
+## [2.0.1] - 2021-06-11
+### Changed
+- Update config_menu.js to avoid clash with other modules overloading resetConfigInstances (Kyle Chesney)
+
+
 ## [2.0.0] - 2021-06-08
 ### Added
 - Add support for custom SQL queries for data (Kyle Chesney)
