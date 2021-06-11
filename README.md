@@ -8,7 +8,7 @@ A REDCap Module designed to display a banner at the top of select project pages.
 Please see the [CHANGELOG](CHANGELOG.md) to learn about changes and bugfixes. Version 2.0.0 introduces **breaking** changes.
 
 ## Prerequisites
-- REDCap >= 8.0.3
+- REDCap >= 10.0.5
 
 ## Easy Installation
 - Obtain this module from the Consortium [REDCap Repo](https://redcap.vanderbilt.edu/consortium/modules/index.php) from the REDCap Control Center.
