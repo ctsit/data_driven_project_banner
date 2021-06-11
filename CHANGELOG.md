@@ -1,6 +1,12 @@
 # Change Log
 All notable changes to the REDCap Data Driven Project Banner will be documented in this file.
 
+
+## [2.0.2] - 2021-06-11
+### Changed
+- Use framework-version 5 and set minimum REDCap version to 10.0.5 (Philip Chase)
+
+
 ## [2.0.1] - 2021-06-11
 ### Changed
 - Update config_menu.js to avoid clash with other modules overloading resetConfigInstances (Kyle Chesney)
