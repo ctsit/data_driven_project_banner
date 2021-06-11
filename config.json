@@ -3,6 +3,7 @@
     "description": "Display a banner at the top of select project pages. Supports data piping of query results into the banner text.",
     "namespace": "ProjectBanner\\ExternalModule",
     "documentation": "README.md",
+    "framework-version": 5,
     "permissions": [
         "redcap_every_page_top",
         "redcap_module_configure_button_display"
@@ -108,6 +109,6 @@
         }
     ],
     "compatibility": {
-        "redcap-version-min": "8.0.3"
+        "redcap-version-min": "10.0.5"
     }
 }
