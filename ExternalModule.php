@@ -95,7 +95,12 @@ class ExternalModule extends AbstractExternalModule {
         if (!$prebuilt_sql) { return; }
 
         $prebuilt_sql = htmlspecialchars_decode($prebuilt_sql);
-        $sql = str_replace("[project_id]", PROJECT_ID, $prebuilt_sql);
+
+        // PROJECT_ID constant absence causes system error
+        if (str_contains($prebuilt_sql, "[project_id]")) {
+            if (!defined('PROJECT_ID')) { return false; }
+            $sql = str_replace("[project_id]", PROJECT_ID, $prebuilt_sql);
+        }
 
         $result = $this->framework->query($sql, []);
         if ($result) {
