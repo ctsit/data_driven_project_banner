@@ -3,11 +3,8 @@
     "description": "Display a banner at the top of select project pages. Supports data piping of query results into the banner text.",
     "namespace": "ProjectBanner\\ExternalModule",
     "documentation": "README.md",
-    "framework-version": 5,
-    "permissions": [
-        "redcap_every_page_top",
-        "redcap_module_configure_button_display"
-    ],
+    "framework-version": 14,
+    "enable-every-page-hooks-on-system-pages": true,
     "authors": [
         {
             "name": "University of Florida CTS-IT",

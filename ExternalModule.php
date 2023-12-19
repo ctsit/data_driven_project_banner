@@ -11,7 +11,13 @@ class ExternalModule extends AbstractExternalModule {
         $url = $_SERVER['REQUEST_URI'];
         $is_on_project_home = preg_match("/\/redcap_v\d+\.\d+\.\d+\/index\.php\?pid=\d+\z/", $url);
         $is_on_project_setup = preg_match("/.*ProjectSetup.*/", $url);
+        $is_on_mod_manager = preg_match("/.*ExternalModules.*/", $url);
         $criteria = $this->getSystemSetting('criteria');
+
+        if ($is_on_mod_manager) {
+            $this->setJsSettings(array('modulePrefix' => $this->PREFIX));
+            $this->includeJs('js/config_menu.js');
+        }
 
         if ($this->getSystemSetting('display_everywhere') || ($is_on_project_home || $is_on_project_setup)) {
             $sql_response = $this->queryData();
@@ -29,13 +35,6 @@ class ExternalModule extends AbstractExternalModule {
                     break;
             }
         }
-    }
-
-
-    function redcap_module_configure_button_display($project_id) {
-        $this->setJsSettings(array('modulePrefix' => $this->PREFIX));
-        $this->includeJs('js/config_menu.js');
-        return true;
     }
 
 
