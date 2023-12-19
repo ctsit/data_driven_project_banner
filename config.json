@@ -106,6 +106,6 @@
         }
     ],
     "compatibility": {
-        "redcap-version-min": "10.0.5"
+        "redcap-version-min": "13.7.0"
     }
 }

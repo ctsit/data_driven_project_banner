@@ -17,6 +17,8 @@ class ExternalModule extends AbstractExternalModule {
         if ($is_on_mod_manager) {
             $this->setJsSettings(array('modulePrefix' => $this->PREFIX));
             $this->includeJs('js/config_menu.js');
+
+            // $this->framework->initializeJavascriptModuleObject();
         }
 
         if ($this->getSystemSetting('display_everywhere') || ($is_on_project_home || $is_on_project_setup)) {
@@ -90,16 +92,14 @@ class ExternalModule extends AbstractExternalModule {
 
 
     private function performPrebuiltQuery($prebuilt_sql) {
-        if (!$prebuilt_sql) {
-            return;
-        }
-        $prebuilt_sql = htmlspecialchars_decode($prebuilt_sql);
+        if (!$prebuilt_sql) { return; }
 
+        $prebuilt_sql = htmlspecialchars_decode($prebuilt_sql);
         $sql = str_replace("[project_id]", PROJECT_ID, $prebuilt_sql);
 
-        // TODO: migrate to framework v4's query in major version change
-        if ($response = db_query($sql)) {
-            return ($response->fetch_all(MYSQLI_ASSOC));
+        $result = $this->framework->query($sql, []);
+        if ($result) {
+            return ($result->fetch_all(MYSQLI_ASSOC));
         }
 
         return false;
