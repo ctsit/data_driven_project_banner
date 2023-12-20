@@ -11,7 +11,15 @@ class ExternalModule extends AbstractExternalModule {
         $url = $_SERVER['REQUEST_URI'];
         $is_on_project_home = preg_match("/\/redcap_v\d+\.\d+\.\d+\/index\.php\?pid=\d+\z/", $url);
         $is_on_project_setup = preg_match("/.*ProjectSetup.*/", $url);
+        $is_on_mod_manager = preg_match("/.*ExternalModules.*/", $url);
         $criteria = $this->getSystemSetting('criteria');
+
+        if ($is_on_mod_manager) {
+            $this->setJsSettings(array('modulePrefix' => $this->PREFIX));
+            $this->includeJs('js/config_menu.js');
+
+            // $this->framework->initializeJavascriptModuleObject();
+        }
 
         if ($this->getSystemSetting('display_everywhere') || ($is_on_project_home || $is_on_project_setup)) {
             $sql_response = $this->queryData();
@@ -29,13 +37,6 @@ class ExternalModule extends AbstractExternalModule {
                     break;
             }
         }
-    }
-
-
-    function redcap_module_configure_button_display($project_id) {
-        $this->setJsSettings(array('modulePrefix' => $this->PREFIX));
-        $this->includeJs('js/config_menu.js');
-        return true;
     }
 
 
@@ -91,16 +92,19 @@ class ExternalModule extends AbstractExternalModule {
 
 
     private function performPrebuiltQuery($prebuilt_sql) {
-        if (!$prebuilt_sql) {
-            return;
-        }
+        if (!$prebuilt_sql) { return; }
+
         $prebuilt_sql = htmlspecialchars_decode($prebuilt_sql);
 
-        $sql = str_replace("[project_id]", PROJECT_ID, $prebuilt_sql);
+        // PROJECT_ID constant absence causes system error
+        if (str_contains($prebuilt_sql, "[project_id]")) {
+            if (!defined('PROJECT_ID')) { return false; }
+            $sql = str_replace("[project_id]", PROJECT_ID, $prebuilt_sql);
+        }
 
-        // TODO: migrate to framework v4's query in major version change
-        if ($response = db_query($sql)) {
-            return ($response->fetch_all(MYSQLI_ASSOC));
+        $result = $this->framework->query($sql, []);
+        if ($result) {
+            return ($result->fetch_all(MYSQLI_ASSOC));
         }
 
         return false;
