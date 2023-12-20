@@ -2,6 +2,13 @@
 All notable changes to the REDCap Data Driven Project Banner will be documented in this file.
 
 
+## [2.0.3] - 2023-12-20
+### Changed
+- Check for definition of PROJECT_ID if used in piping to prevent crash (@ChemiKyle, #25, #26)
+- Replace db_query with EM framework's parameterized query Bump min REDCap version to reflect framework 14 requirement (@ChemiKyle, #25, #26)
+- Update config_menu.js injection to execute in redcap_every_page_top Stop using redcap_module_configure_button_display due to framework changes causing it to throw errors Update framework version to 14 (@ChemiKyle, #25, #26)
+
+
 ## [2.0.2] - 2021-06-11
 ### Changed
 - Use framework-version 5 and set minimum REDCap version to 10.0.5 (Philip Chase)
