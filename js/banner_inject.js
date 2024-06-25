@@ -1,3 +1,6 @@
 $(document).ready(function() {
-    $("#subheader").before(`<div id='project-banner'> ${data_driven_project_banner_text}</div>`);
+
+  for (var i = 0; i < DDPB.DDPBs.length; ++i) {
+    $("#subheader").before(`<div class='project-banner' id='project-banner-${i}'> ${DDPB.DDPBs[i]}</div>`);
+  }
 });

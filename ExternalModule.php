@@ -7,12 +7,14 @@ use REDCap;
 
 class ExternalModule extends AbstractExternalModule {
 
+    public $display_banners_arr;
+
     function redcap_every_page_top($project_id) {
         $url = $_SERVER['REQUEST_URI'];
         $is_on_project_home = preg_match("/\/redcap_v\d+\.\d+\.\d+\/index\.php\?pid=\d+\z/", $url);
         $is_on_project_setup = preg_match("/.*ProjectSetup.*/", $url);
         $is_on_mod_manager = preg_match("/.*ExternalModules.*/", $url);
-        $criteria = $this->getSystemSetting('criteria');
+        $banners = $this->framework->getSubSettings("banner_settings");
 
         if ($is_on_mod_manager) {
             $this->setJsSettings(array('modulePrefix' => $this->PREFIX));
@@ -21,49 +23,66 @@ class ExternalModule extends AbstractExternalModule {
             // $this->framework->initializeJavascriptModuleObject();
         }
 
-        if ($this->getSystemSetting('display_everywhere') || ($is_on_project_home || $is_on_project_setup)) {
-            $sql_response = $this->queryData();
-            switch ($criteria) {
-                case "custom":
-                    if (!$this->queryCriteria()) return;
-                    $this->displayBanner($sql_response);
-                    break;
-                case "require_result":
-                    // check if the criteria returns anything
-                    if (!$sql_response) return;
-                default:
-                    // always display
-                    $this->displayBanner($sql_response);
-                    break;
+        $this->setJsSettings(array('DDPBs' => []));
+        // echo "<script type='text/javascript'>var DDPBs = [];</script>";
+
+        $i = 0;
+        foreach ($banners as $banner) {
+            $banner['num'] = $i++;
+
+            if ($banner['display_everywhere'] || ($is_on_project_home || $is_on_project_setup)) {
+                // $sql_response = $this->queryData();
+                $sql_response = false;
+                $sql_response = $this->performQuery($banner['custom_data_sql']);
+                switch ($banner['criteria']) {
+                    case "custom":
+                        // if (!$this->queryCriteria()) return;
+                        if (!$this->performQuery($banner['custom_criteria_sql'])) continue;
+                        $this->displayBanner($banner, $sql_response);
+                        break;
+                    case "require_result":
+                        // check if the criteria returns anything
+                        if (!$sql_response) continue;
+                    default:
+                        // always display
+                        $this->displayBanner($banner, $sql_response);
+                        break;
+                }
             }
+
         }
-    }
-
-
-    function displayBanner($sql_response) {
-        echo "<style>
-        #project-banner {" .
-            "--bg-color: " . $this->getSystemSetting('bg_color') . ";" .
-            "--border-color: " . $this->getSystemSetting('border_color') . ";" .
-        "}
-        </style>";
 
         $this->includeCss('css/banner.css');
         $this->includeJs('js/banner_inject.js');
+    }
 
-        if ( !$banner_text = $this->getSystemSetting('banner_text')  )  {
+
+    function displayBanner($banner, $sql_response) {
+        echo "<style>
+        #project-banner-" . $banner['num'] . " {" .
+            "--bg-color: " . $banner['bg_color'] . ";" .
+            "--border-color: " . $banner['border_color'] . ";" .
+        "}
+        </style>";
+
+
+        if ( !$banner_text = $banner['banner_text']  )  {
             // Default banner text
             $banner_text = "This is the default project banner. Change this in the system level module configuration for the Data Driven Project Banner Module.</br>";
         }
 
-        $banner_output = $this->getSystemSetting('banner_text_top');
+        $banner_output = $banner['banner_text_top'] ?? "";
         if ($sql_response) {
             $banner_output .= $this->replaceSmartVariables($banner_text, $sql_response);
+        } else {
+            $banner_output .= $banner_text;
         }
-        $banner_output .= $this->getSystemSetting('banner_text_bottom');
+        $banner_output .= $banner['banner_text_bottom'] ?? "";
 
         $banner_text = json_encode($banner_output);
-        echo "<script type='text/javascript'>var data_driven_project_banner_text = $banner_text;</script>";
+        // echo "<script type='text/javascript'>data_driven_project_banner_text_$i = $banner_text;</script>";
+        $banner_str = "<script type='text/javascript'>DDPB.DDPBs[" . $banner['num'] . "] = $banner_text;</script>";
+        echo $banner_str;
     }
 
 
@@ -99,10 +118,10 @@ class ExternalModule extends AbstractExternalModule {
         // PROJECT_ID constant absence causes system error
         if (str_contains($prebuilt_sql, "[project_id]")) {
             if (!defined('PROJECT_ID')) { return false; }
-            $sql = str_replace("[project_id]", PROJECT_ID, $prebuilt_sql);
+            $prebuilt_sql = str_replace("[project_id]", PROJECT_ID, $prebuilt_sql);
         }
 
-        $result = $this->framework->query($sql, []);
+        $result = $this->framework->query($prebuilt_sql, []);
         if ($result) {
             return ($result->fetch_all(MYSQLI_ASSOC));
         }
@@ -110,14 +129,9 @@ class ExternalModule extends AbstractExternalModule {
         return false;
     }
 
-    function queryCriteria() {
-        $sql = "SELECT " . $this->getSystemSetting('custom_criteria_sql');
-        return $this->performPrebuiltQuery($sql);
-    }
-
-
-    function queryData() {
-        $data_sql = "SELECT " . $this->getSystemSetting('custom_data_sql');
+    function performQuery($sql_str) {
+        if (is_null($sql_str)) return false;
+        $data_sql = "SELECT " . $sql_str;
         return $this->performPrebuiltQuery($data_sql);
     }
 
