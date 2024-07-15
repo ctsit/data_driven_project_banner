@@ -71,20 +71,27 @@ class ExternalModule extends AbstractExternalModule {
             $banner_text = "This is the default project banner. Change this in the system level module configuration for the Data Driven Project Banner Module.</br>";
         }
 
-        $banner_output = $banner['banner_text_top'] ?? "";
+        $banner_output = "";
+        $multi_row_response = $banner['multi_row_response'] ?? false;
+        
+        if ($multi_row_response) {
+            $banner_output .= $banner['banner_text_top'] ?? "";
+        }
+
         if ($sql_response) {
             $banner_output .= $this->replaceSmartVariables($banner_text, $sql_response);
         } else {
             $banner_output .= $banner_text;
         }
-        $banner_output .= $banner['banner_text_bottom'] ?? "";
+
+        if ($multi_row_response) {
+            $banner_output .= $banner['banner_text_bottom'] ?? "";
+        }
 
         $banner_text = json_encode($banner_output);
-        // echo "<script type='text/javascript'>data_driven_project_banner_text_$i = $banner_text;</script>";
         $banner_str = "<script type='text/javascript'>DDPB.DDPBs[" . $banner['num'] . "] = $banner_text;</script>";
         echo $banner_str;
     }
-
 
     function replaceSmartVariables($input_text, $sql_response) {
         $replaced_vals = "";
