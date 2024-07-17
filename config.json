@@ -3,7 +3,7 @@
     "description": "Display a banner at the top of select project pages. Supports data piping of query results into the banner text.",
     "namespace": "ProjectBanner\\ExternalModule",
     "documentation": "README.md",
-    "framework-version": 14,
+    "framework-version": 15,
     "enable-every-page-hooks-on-system-pages": true,
     "authors": [
         {
@@ -27,16 +27,7 @@
             {
                 "name": "Banner Top Text",
                 "key": "banner_text_top",
-                "type": "rich-text",
-                "branchingLogic": {
-                    "conditions":
-                    [
-                        {
-                            "field": "multi_row_response",
-                            "value": true
-                        }
-                    ]
-                }
+                "type": "rich-text"
             },
             {
                 "name": "Banner Text",
@@ -46,16 +37,7 @@
             {
                 "name": "Banner Bottom Text",
                 "key": "banner_text_bottom",
-                "type": "rich-text",
-                "branchingLogic": {
-                    "conditions":
-                    [
-                        {
-                            "field": "multi_row_response",
-                            "value": true
-                        }
-                    ]
-                }
+                "type": "rich-text"
             },
             {
                 "name": "Banner Background Color",
@@ -89,16 +71,7 @@
             {
                 "name": "Custom SQL for criteria",
                 "key": "custom_criteria_sql",
-                "type": "textarea",
-                "branchingLogic": {
-                    "conditions":
-                    [
-                        {
-                            "field": "criteria",
-                            "value": "custom"
-                        }
-                    ]
-                }
+                "type": "textarea"
             },
             {
                 "name": "Custom SQL for data",
@@ -114,6 +87,6 @@
     }
     ],
     "compatibility": {
-        "redcap-version-min": "13.7.0"
+        "redcap-version-min": "14.0.2"
     }
 }
