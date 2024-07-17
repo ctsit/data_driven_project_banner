@@ -23,7 +23,7 @@ class ExternalModule extends AbstractExternalModule {
             // $this->framework->initializeJavascriptModuleObject();
         }
 
-        $this->setJsSettings(array('DDPBs' => []));
+        $this->setJsSettings(array('DDPBs' => array_fill(0, count($banners), "")));
         // echo "<script type='text/javascript'>var DDPBs = [];</script>";
 
         $i = 0;
