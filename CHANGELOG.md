@@ -1,6 +1,7 @@
-# Change Log
-All notable changes to the REDCap Data Driven Project Banner will be documented in this file.
-
+# data_driven_project_banner 3.0.0 (released 2024-07-23)
+- Allow multiple banners (@ChemiKyle, @saipavan10-git, #24, #28, #29)
+- Improve README with details about new config (@saipavan10-git, #29)
+- Bump framework version (@saipavan10-git, #29)
 
 ## [2.0.3] - 2023-12-20
 ### Changed

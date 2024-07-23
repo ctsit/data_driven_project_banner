@@ -3,7 +3,7 @@
     "description": "Display a banner at the top of select project pages. Supports data piping of query results into the banner text.",
     "namespace": "ProjectBanner\\ExternalModule",
     "documentation": "README.md",
-    "framework-version": 14,
+    "framework-version": 15,
     "enable-every-page-hooks-on-system-pages": true,
     "authors": [
         {
@@ -13,99 +13,80 @@
         }
     ],
     "system-settings": [
-        {
-            "name": "Multi Row Response",
-            "key": "multi_row_response",
-            "type": "checkbox"
-        },
-        {
-            "name": "Banner Top Text",
-            "key": "banner_text_top",
-            "type": "rich-text",
-            "branchingLogic": {
-                "conditions":
-                [
+    {
+        "key": "banner_settings",
+        "name": "Banner Settings",
+        "type": "sub_settings",
+        "repeatable": true,
+        "sub_settings": [
+            {
+                "name": "Multi Row Response",
+                "key": "multi_row_response",
+                "type": "checkbox"
+            },
+            {
+                "name": "Banner Top Text",
+                "key": "banner_text_top",
+                "type": "rich-text"
+            },
+            {
+                "name": "Banner Text",
+                "key": "banner_text",
+                "type": "rich-text"
+            },
+            {
+                "name": "Banner Bottom Text",
+                "key": "banner_text_bottom",
+                "type": "rich-text"
+            },
+            {
+                "name": "Banner Background Color",
+                "key": "bg_color",
+                "type": "color-picker"
+            },
+            {
+                "name": "Banner Border Color",
+                "key": "border_color",
+                "type": "color-picker"
+            },
+            {
+                "name": "Criteria for display",
+                "key": "criteria",
+                "type": "dropdown",
+                "choices": [
                     {
-                        "field": "multi_row_response",
-                        "value": true
-                    }
-                ]
-            }
-        },
-        {
-            "name": "Banner Text",
-            "key": "banner_text",
-            "type": "rich-text"
-        },
-        {
-            "name": "Banner Bottom Text",
-            "key": "banner_text_bottom",
-            "type": "rich-text",
-            "branchingLogic": {
-                "conditions":
-                [
+                        "name": "Always display",
+                        "value": "always"
+                    },
                     {
-                        "field": "multi_row_response",
-                        "value": true
-                    }
-                ]
-            }
-        },
-        {
-            "name": "Banner Background Color",
-            "key": "bg_color",
-            "type": "color-picker"
-        },
-        {
-            "name": "Banner Border Color",
-            "key": "border_color",
-            "type": "color-picker"
-        },
-        {
-            "name": "Criteria for display",
-            "key": "criteria",
-            "type": "dropdown",
-            "choices": [
-                {
-                    "name": "Always display",
-                    "value": "always"
-                },
-                {
-                    "name": "Require a non-empty query result",
-                    "value": "require_result"
-                },
-                {
-                    "name": "Custom query",
-                    "value": "custom"
-                }
-            ]
-        },
-        {
-            "name": "Custom SQL for criteria",
-            "key": "custom_criteria_sql",
-            "type": "textarea",
-            "branchingLogic": {
-                "conditions":
-                [
+                        "name": "Require a non-empty query result",
+                        "value": "require_result"
+                    },
                     {
-                        "field": "criteria",
+                        "name": "Custom query",
                         "value": "custom"
                     }
                 ]
+            },
+            {
+                "name": "Custom SQL for criteria",
+                "key": "custom_criteria_sql",
+                "type": "textarea"
+            },
+            {
+                "name": "Custom SQL for data",
+                "key": "custom_data_sql",
+                "type": "textarea"
+            },
+            {
+                "name": "Display on all pages",
+                "key": "display_everywhere",
+                "type": "checkbox"
             }
-        },
-        {
-            "name": "Custom SQL for data",
-            "key": "custom_data_sql",
-            "type": "textarea"
-        },
-        {
-            "name": "Display on all pages",
-            "key": "display_everywhere",
-            "type": "checkbox"
-        }
+        ]
+    }
     ],
     "compatibility": {
-        "redcap-version-min": "13.7.0"
+        "redcap-version-min": "14.0.2"
     }
 }
